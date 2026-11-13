@@ -1,5 +1,6 @@
 package com.uzhold.library.service;
 
+import com.uzhold.library.dto.BookRequest;
 import com.uzhold.library.model.Book;
 import com.uzhold.library.repository.BookRepository;
 import org.springframework.stereotype.Service;
@@ -15,33 +16,37 @@ public class BookService {
         this.bookRepository = bookRepository;
     }
 
-    public List<Book> getAllBooks(){
+    public List<Book> getAllBooks() {
         return bookRepository.findAll();
     }
 
-    public Book addBook(Book book){
-       return bookRepository.save(book);
+    public Book addBook(BookRequest request) {
+        Book book = new Book();
+        book.setAuthor(request.getAuthor());
+        book.setTitle(request.getTitle());
+        return bookRepository.save(book);
     }
-    public Book getBookById(Long id){
-       return bookRepository.findById(id).orElse(null);
+
+    public Book getBookById(Long id) {
+        return bookRepository.findById(id).orElse(null);
     }
 
     public boolean deleteBookById(Long id) {
-        if(bookRepository.existsById(id)){
-             bookRepository.deleteById(id);
-             return true;
+        if (bookRepository.existsById(id)) {
+            bookRepository.deleteById(id);
+            return true;
         }
         return false;
 
     }
 
-    public Book updateBook(Long id, Book newData){
+    public Book updateBook(Long id, BookRequest request) {
         Book book = bookRepository.findById(id).orElse(null);
         if (book == null) {
             return null;
         }
-        book.setTitle(newData.getTitle());
-        book.setAuthor(newData.getAuthor());
+        book.setTitle(request.getTitle());
+        book.setAuthor(request.getAuthor());
         return bookRepository.save(book);
     }
 }

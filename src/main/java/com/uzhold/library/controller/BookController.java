@@ -1,8 +1,10 @@
     package com.uzhold.library.controller;
 
 
+    import com.uzhold.library.dto.BookRequest;
     import com.uzhold.library.model.Book;
     import com.uzhold.library.service.BookService;
+    import jakarta.validation.Valid;
     import org.springframework.http.HttpStatus;
     import org.springframework.http.ResponseEntity;
     import org.springframework.web.bind.annotation.*;
@@ -24,8 +26,8 @@
         }
 
         @PostMapping("/books")
-        public ResponseEntity<Book> addBook(@RequestBody Book book){
-            Book saved = bookService.addBook(book);
+        public ResponseEntity<Book> addBook(@Valid @RequestBody BookRequest request){
+            Book saved = bookService.addBook(request);
             return ResponseEntity.status(HttpStatus.CREATED).body(saved);
         }
 
@@ -47,8 +49,8 @@
         }
 
         @PutMapping("/books/{id}")
-        public ResponseEntity<Book> updateBook(@PathVariable Long id,@RequestBody Book newData){
-            Book updated = bookService.updateBook(id, newData);
+        public ResponseEntity<Book> updateBook(@PathVariable Long id,@Valid @RequestBody BookRequest request){
+            Book updated = bookService.updateBook(id, request);
             if(updated != null){
                 return ResponseEntity.ok(updated);
             }
