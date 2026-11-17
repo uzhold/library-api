@@ -1,6 +1,7 @@
 package com.uzhold.library.exception;
 
 
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -20,5 +21,11 @@ public class GlobalExceptionHandler {
             errors.put(error.getField(), error.getDefaultMessage());
         }
         return ResponseEntity.badRequest().body(errors);
+    }
+    @ExceptionHandler(BookNotFoundException.class)
+    public ResponseEntity<Map<String,String>> handleBookNotFound(BookNotFoundException ex){
+        Map<String,String> errors = new HashMap<>();
+        errors.put("error", ex.getMessage());
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errors);
     }
 }

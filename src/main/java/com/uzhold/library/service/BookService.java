@@ -1,6 +1,7 @@
 package com.uzhold.library.service;
 
 import com.uzhold.library.dto.BookRequest;
+import com.uzhold.library.exception.BookNotFoundException;
 import com.uzhold.library.model.Book;
 import com.uzhold.library.repository.BookRepository;
 import org.springframework.stereotype.Service;
@@ -28,23 +29,17 @@ public class BookService {
     }
 
     public Book getBookById(Long id) {
-        return bookRepository.findById(id).orElse(null);
+        return bookRepository.findById(id)
+                .orElseThrow(() -> new BookNotFoundException(id));
     }
 
-    public boolean deleteBookById(Long id) {
-        if (bookRepository.existsById(id)) {
-            bookRepository.deleteById(id);
-            return true;
-        }
-        return false;
+    public void deleteBookById(Long id) {
+        bookRepository.delete(getBookById(id));
 
     }
 
     public Book updateBook(Long id, BookRequest request) {
-        Book book = bookRepository.findById(id).orElse(null);
-        if (book == null) {
-            return null;
-        }
+        Book book = getBookById(id);
         book.setTitle(request.getTitle());
         book.setAuthor(request.getAuthor());
         return bookRepository.save(book);
