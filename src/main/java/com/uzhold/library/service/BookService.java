@@ -2,9 +2,11 @@ package com.uzhold.library.service;
 
 import com.uzhold.library.dto.BookRequest;
 import com.uzhold.library.exception.BookNotFoundException;
+import com.uzhold.library.model.Author;
 import com.uzhold.library.model.Book;
 import com.uzhold.library.repository.BookRepository;
 import org.springframework.stereotype.Service;
+
 
 import java.util.List;
 
@@ -12,9 +14,11 @@ import java.util.List;
 public class BookService {
 
     private final BookRepository bookRepository;
+    private final AuthorService authorService;
 
-    public BookService(BookRepository bookRepository) {
+    public BookService(BookRepository bookRepository, AuthorService authorService) {
         this.bookRepository = bookRepository;
+        this.authorService = authorService;
     }
 
     public List<Book> getAllBooks() {
@@ -23,7 +27,8 @@ public class BookService {
 
     public Book addBook(BookRequest request) {
         Book book = new Book();
-        book.setAuthor(request.getAuthor());
+        Author author = authorService.getAuthorById(request.getAuthorId());
+        book.setAuthor(author);
         book.setTitle(request.getTitle());
         return bookRepository.save(book);
     }
@@ -41,7 +46,8 @@ public class BookService {
     public Book updateBook(Long id, BookRequest request) {
         Book book = getBookById(id);
         book.setTitle(request.getTitle());
-        book.setAuthor(request.getAuthor());
+        Author author = authorService.getAuthorById(request.getAuthorId());
+        book.setAuthor(author);
         return bookRepository.save(book);
     }
 }
