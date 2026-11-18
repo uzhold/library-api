@@ -50,4 +50,9 @@ public class BookService {
         book.setAuthor(author);
         return bookRepository.save(book);
     }
+
+    public List<Book> getBooksByAuthorId(Long authorId) {
+        authorService.getAuthorById(authorId);
+        return bookRepository.findByAuthorId(authorId);
+    }
 }

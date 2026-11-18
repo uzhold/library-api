@@ -4,7 +4,9 @@ package com.uzhold.library.controller;
 
 import com.uzhold.library.dto.AuthorRequest;
 import com.uzhold.library.model.Author;
+import com.uzhold.library.model.Book;
 import com.uzhold.library.service.AuthorService;
+import com.uzhold.library.service.BookService;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,9 +20,12 @@ public class AuthorController {
 
 
     private final AuthorService authorService;
+    private final BookService bookService;
 
-    public AuthorController(AuthorService authorService) {
+
+    public AuthorController(AuthorService authorService, BookService bookService) {
         this.authorService = authorService;
+        this.bookService = bookService;
     }
 
     @GetMapping
@@ -48,4 +53,9 @@ public class AuthorController {
         authorService.deleteAuthorById(id);
         return ResponseEntity.noContent().build();
     }
+    @GetMapping("{id}/books")
+    public List<Book> getBooksByAuthorId(@PathVariable Long id){
+        return bookService.getBooksByAuthorId(id);
+    }
+
 }
