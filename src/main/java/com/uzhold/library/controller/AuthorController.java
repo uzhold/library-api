@@ -1,7 +1,5 @@
 package com.uzhold.library.controller;
 
-
-
 import com.uzhold.library.dto.AuthorRequest;
 import com.uzhold.library.model.Author;
 import com.uzhold.library.model.Book;
@@ -37,6 +35,7 @@ public class AuthorController {
     public Author getAuthorById(@PathVariable Long id){
         return authorService.getAuthorById(id);
     }
+
     @PostMapping
     public ResponseEntity<Author> addAuthor(@RequestBody @Valid AuthorRequest request){
         Author saved = authorService.addAuthor(request);
