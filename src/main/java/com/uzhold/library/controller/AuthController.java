@@ -2,6 +2,8 @@ package com.uzhold.library.controller;
 
 
 
+import com.uzhold.library.dto.LoginRequest;
+import com.uzhold.library.dto.LoginResponse;
 import com.uzhold.library.dto.RegisterRequest;
 import com.uzhold.library.dto.UserResponse;
 import com.uzhold.library.service.AuthService;
@@ -29,6 +31,13 @@ public class AuthController {
     public ResponseEntity<UserResponse> register(@RequestBody @Valid RegisterRequest request){
         UserResponse response =  authservice.register(request);
         return new ResponseEntity<>(response,HttpStatus.CREATED);
+    }
+
+
+    @PostMapping("/login")
+    public ResponseEntity<LoginResponse> login(@RequestBody @Valid LoginRequest request){
+        LoginResponse response = authservice.login(request);
+        return new ResponseEntity<>(response,HttpStatus.OK);
     }
 
 }
